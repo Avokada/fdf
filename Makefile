@@ -6,7 +6,7 @@
 #    By: thaley <thaley@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/06 18:57:03 by thaley            #+#    #+#              #
-#    Updated: 2019/10/11 20:35:12 by thaley           ###   ########.fr        #
+#    Updated: 2019/10/14 17:08:26 by thaley           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ INCLUDES = -I libft -I include
 LIBS = -L libft -lft -lmlx -framework OpenGL -framework AppKit
 
 SRCS = main.c exit.c key_press.c rotate.c draw.c\
-	read_file.c write_line.c
+	read_file.c write_line.c graphics_test.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 

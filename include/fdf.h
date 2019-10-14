@@ -6,7 +6,7 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:04:28 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/12 17:08:48 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/14 19:13:00 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,43 @@
 # define RIGHT_K 124
 # define LEFT_K 123
 # define ESC_K 53
-# define NUM_1 83
-# define NUM_2 84
-# define NUM_3 85
-# define NUM_4 86
-# define NUM_5 87
-# define NUM_6 88
-# define NUM_7 89
-# define NUM_8 91
-# define NUM_9 92
+# define NUM_ONE 83
+# define NUM_TWO 84
+# define NUM_THREE 85
+# define NUM_FOUR 86
+# define NUM_FIVE 87
+# define NUM_SIX 88
+# define NUM_SEVEN 89
+# define NUM_EIGHT 91
+# define NUM_NINE 92
+# define NUM_NULL 82
 # define PLUS_K 69
 # define MINUS_K 78
+
+# define BLUE 0x00606d
+# define DARK_PURPLE 0x330055
+# define LIGHT_PURPLE 0x9988AA
+# define DARK_TURQUOISE 0x007869
+# define MID_TURQUOISE 0x1ff6bb
+# define GREEN 0x95ce45
+# define YELLOW 0xFFF69E
+# define WHITE 0xFFFFFF
 
 typedef struct		s_crd
 {
 	int				x;
 	int				y;
-    int				z;
-    int        		color;
+	int				z;
+	int				color;
+	int				full;
 }					t_crd;
 
 typedef struct		s_point
 {
 	float			x;
 	float			y;
-    float			z;
-    int				color;
+	float			z;
+	int				color;
 }					t_point;
 
 typedef struct		s_draw
@@ -76,13 +87,15 @@ typedef struct		s_fdf
 	void			*image;
 	float			scale;
 	float			degree;
+	int				scale_z;
 	int				pix_inf[3];
 	int				*pixels;
 	int				col;
 	int				row;
+	int				low_p;
+	int				top_p;
 	int				offset_x;
 	int				offset_y;
-	int				scale_z;
 	int				angle_x;
 	int				angle_y;
 	int				angle_z;
@@ -94,6 +107,7 @@ typedef struct		s_fdf
 */
 
 int					ft_exit(t_fdf *fdf, int err);
+void				free_struct(t_fdf *fdf);
 
 /*
 **	key_press.c
@@ -113,7 +127,14 @@ void				draw_image(t_fdf *fdf);
 
 void				rotate_point(t_fdf *fdf);
 
+/*
+**	color.c
+*/
+
+void				put_color(t_draw tmp, t_point *src,\
+					t_point *dst, int *pixels);
+
 void				write_lines(t_fdf *fdf, int fd);
-void	ft_read_file(t_fdf *fdf, char *file_name);
+void				ft_read_file(t_fdf *fdf, char *file_name);
 
 #endif

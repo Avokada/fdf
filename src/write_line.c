@@ -6,13 +6,13 @@
 /*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 23:57:49 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/12 17:04:21 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/14 18:26:30 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-static void	free_struct(char **str)
+static void	free_arr(char **str)
 {
 	int		i;
 
@@ -44,6 +44,11 @@ static void	write_x_z(char **str, t_fdf *fdf)
 		fdf->crd[fdf->row][i].y = fdf->row;
 		fdf->crd[fdf->row][i].x = i;
 		fdf->crd[fdf->row][i].z = ft_atoi(str[i]);
+		if (fdf->crd[fdf->row][i].z > fdf->top_p)
+			fdf->top_p = fdf->crd[fdf->row][i].z;
+		if (fdf->crd[fdf->row][i].z < fdf->low_p)
+			fdf->low_p = fdf->crd[fdf->row][i].z;
+		fdf->crd[fdf->row][i].color = 0;
 		i++;
 	}
 }
@@ -57,9 +62,12 @@ void	write_lines(t_fdf *fdf, int fd)
 	while ((get_next_line(fd, &line)) > 0)
 	{
 		tmp = ft_strsplit(line, ' ');
+		free(line);
+		line = NULL;
 		write_x_z(tmp, fdf);
-		free_struct(tmp);
+		free_arr(tmp);
 		fdf->row++;
 	}
+	free(line);
 	fdf->crd[fdf->row] = NULL;
 }
