@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 16:17:37 by wveta             #+#    #+#             */
-/*   Updated: 2019/10/11 20:07:35 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 18:45:27 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,6 @@ int					ft_isupper(int c);
 int					ft_isblank(int s);
 int					ft_islower(int c);
 int					ft_isxdigit(int c);
+int					ft_abs(int n);
 
 #endif

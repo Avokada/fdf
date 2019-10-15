@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 17:44:54 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/14 19:11:28 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 18:46:00 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void			draw_line(int *pixels, t_point *src, t_point *dst)
 		else
 			line.step_x = -1;
 		line.step_y = line.lenght_y / fabsf(line.lenght_x);
-		line.step = abs((int)line.lenght_x);
+		line.step = ft_abs((int)line.lenght_x);
 	}
 	else
 	{
