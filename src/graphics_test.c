@@ -1,44 +1,38 @@
-#include <mlx.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "./libft/libft.h"
-#include <fcntl.h>
-#include <stdio.h>
+#include "../include/fdf.h"
 
-typedef	struct	s_crd
+int	ft_ishex(char c)
 {
-	int		z;
-	int		x;
-	int		y;
-	int		color;
-	int		full;
-}				t_crd;
+	if ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))
+		return (1);
+	return (0);
+}
 
-
-void	put_nul(t_crd **map)
+static int	ft_iscolor(char	*str)
 {
-	int i;
+	int	i;
+	int	caps;
 
-	i = 0;	
-	while (map[i])
+	i = 2;
+	caps = 0;
+	if (!str[0] || !str[7])
+		return (0);
+	if ((str[0] && str[0] != '0') || !str[1] || (str[1] && str[1] != 'x'))
+		return (0);
+	while (str[i] && i < 8)
 	{
-		map[i] = NULL;
+		if (!ft_ishex(str[i]) && !ft_isdigit (str[i]))
+			return (0);
+		if (str[i] >= 'a' && str[i] <= 'f' && caps == 0)
+			caps = -1;
+		if (str[i] >= 'A' && str[i] <= 'F' && caps == 0)
+			caps = 1;
+		if (str[i] >= 'a' && str[i] <= 'f' && caps == 1)
+			return (0);
+		if (str[i] >= 'A' && str[i] <= 'F' && caps == -1)
+			return (0);
 		i++;
 	}
-}
-
-
-int deal_key(int key, void *param)
-{
-	ft_putchar('X');
-	return (0);
-}
-
-int closed(int key, int i)
-{
-	if (key == 53)
-		exit (0);
-	return (0);
+	return (1);
 }
 
 static	int map_type(char *text_map)
@@ -50,14 +44,19 @@ static	int map_type(char *text_map)
 	type = 1;
 	while (text_map[i])
 	{
-		if (!ft_isdigit((int)text_map[i]) && text_map[i] != ' ' && text_map[i] != 'x' && text_map[i] != ',')
+		if (text_map[i] != ' ' && text_map[i] != ',' && ((!ft_isdigit(text_map[i])\
+		&& (text_map[i] == '-' && !ft_isdigit(text_map[i + 1])))))
 			return (0);
-		else if(text_map[i - 1] && text_map[i + 1] && text_map[i] == 'x' && (text_map[i - 1] != '0' || !ft_isdigit((int)text_map[i + 1])))
-			return (0);
-		else if(text_map[i - 1] && text_map[i + 1] && text_map[i] == ',' && (text_map[i + 1] != '0' || !ft_isdigit((int)text_map[i - 1])))
-			return (0);
-		else if (text_map[i] == 'x' || text_map[i] == ',')
-			type = 2;
+		else if(text_map[i] == ',')
+		{ 
+			if (text_map[i + 1] && ft_iscolor(text_map + i + 1))
+			{
+				i += 7;
+				type = 2;
+			}
+			else
+				return (0);
+		}
 		i++;
 	}
 	return (type);
@@ -151,242 +150,159 @@ static int	ft_hexatoi(char *str)
 			res += (((int)str[i] - 87) * pow_16(ft_strlen(str) - i));
 		if (str[i] >= 'A' && str[i ] <= 'F')
 			res += (((int)str[i] - 55) * pow_16(ft_strlen(str) - i));
+		i++;
 	}
 	return (res);
 }
 
-static	void read_colors(char *str, t_crd **map)
+static	void read_colors(char *str, t_fdf *fdf, int j)
 {
-	int i;
-	int	j;
+	int		i;
 	char	**txt;
-	char	*tmp;
+	char	**tmp;
 
-	j = 0;
-	while (map[j] != NULL)
-		j++;
-	if (!(map[j] = (t_crd *)malloc(sizeof(t_crd) * (num_items(str, 2) + 1))))
-	{
-		map = NULL;
-		return ;
-	}
 	txt = ft_strsplit(str, ' ');
+	if (fdf->col == 0)
+	{
+		while (txt[fdf->col])
+			fdf->col++;
+	}
 	i = 0;
+	if (!(fdf->crd[j] = (t_crd *)malloc(sizeof(t_crd) * (fdf->col + 1))))
+		ft_exit(fdf, 0);
 	while (txt[i])
 	{
-		if (!(tmp = (char *)malloc(sizeof(char) * len_z(txt[i]))))
-			return ;
-		ft_strncpy(tmp, txt[i], len_z(txt[i]));
-		map[j][i].z = ft_atoi(tmp);
-		free (tmp);
-		map[j][i].x = i;
-		map[j][i].y = j;
-		if (!(tmp = (char *)malloc(sizeof(char) * \
-		(ft_strlen(txt[i]) - len_z(txt[i]) - 3))))
-			return ;
-		ft_strncpy(tmp, &txt[i][len_z(txt[i]) + 2], (ft_strlen(txt[i]) - len_z(txt[i]) - 3));
-		map[j][i].color = ft_hexatoi(tmp);
-		free(tmp);
-		free(txt[i]);
-		map[j][i].full = 1;
+		tmp = ft_strsplit(txt[i], ',');
+		fdf->crd[j][i].z = ft_atoi(tmp[0]);
+		if (!tmp[1])
+			fdf->crd[j][i].color = 0;
+		else
+			fdf->crd[j][i].color = ft_hexatoi(tmp[1] + 2);
+		fdf->crd[j][i].x = i;
+		fdf->crd[j][i].y = j;
+		free_arr(tmp);
 		i++;
 	}
-	map[j][i].full = 0;
-	free(txt);
+	free_arr(txt);
 }
 
 
 
-static	void reading(char *str, t_crd **map)
+static	void reading(char *str, t_fdf *fdf, int j)
 {
 	int 	i;
-	int		j;
 	char	**txt;
 
-	j = 0;
-	while (map[j] != NULL)
-		i++;
-	if (!(map[j] = (t_crd *)malloc(sizeof(t_crd) * num_items(str, 1))))
-	{
-		map = NULL;
-		return ;
-	}
 	txt = ft_strsplit(str, ' ');
+	if (fdf->col == 0)
+	{
+		while (txt[fdf->col])
+			fdf->col++;
+	}
 	i = 0;
+	if (!(fdf->crd[j] = (t_crd *)malloc(sizeof(t_crd) * (fdf->col + 1))))
+		ft_exit(fdf, 0);
 	while (txt[i])
 	{
-		map[j][i].color = -1;
-		map[j][i].x = i;
-		map[j][i].y = j;
-		map[j][i].z = ft_atoi(txt[i]);
+		if (i > fdf->col)
+			ft_exit(fdf, 3);
+		fdf->crd[j][i].color = 0;
+		fdf->crd[j][i].x = i;
+		fdf->crd[j][i].y = j;
+		fdf->crd[j][i].z = ft_atoi(txt[i]);
 		i++;
 	}
+	fdf->crd[j + 1] = NULL;
+	if (i < fdf->col)
+		ft_exit(fdf, 3);
+	free_arr(txt);
 }
 
-static int	len_row(t_crd *map)
+static	int	make_map(char *argv, t_fdf *fdf)
 {
-	int i;
-
-	i = 0;
-	while (map[i].full)
-		i++;
-	return (i);
-}
-
-static int	len_col(t_crd **map, int i)
-{
-	int j;
-
-	j = 0;
-	while (map[j] != NULL && map[j][i].full)
-		j++;
-	return (j);
-}
-
-static int	is_valid(t_crd **map)
-{
-	int	i;
-	int	j;
-	int len;
-
-	j = 0;
-	len = len_row(map[0]);
-	if (!map[1][1].full || !map[0][1].full || !map[1][0].full)
-		return (0);
-	while (map[j] != NULL)
-	{
-		if (len != len_row(map[i]))
-			return (0);
-		j++;
-	}
-	i = 0;
-	len = len_col(map, 0);
-	while(map[0][i].full)
-	{
-		if (len != len_col(map, i))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-static	int	make_map(int argc, char **argv, t_crd **map)
-{
-	char	**text_map;
+	char	*text_map;
 	int		fd;
 	int		gnl;
 	int		type;
-	int		tmp;
+	int		i;
 
 	gnl = 1;
 	type = 1;
-	fd = open(argv[1], O_RDWR);
+	i = 0;
+	fd = open(argv, O_RDWR);
 	while (gnl != 0)
 	{
-		gnl = get_next_line(fd, text_map);
+		gnl = get_next_line(fd, &text_map);
+		//printf("%s\n", *text_map);
+		//printf("292 %i %s\n", gnl, *text_map);
 		if (gnl == -1)
+		{
+			free(text_map);
 			return (-1);
+		}
 		else if (gnl == 1)
 		{
-			tmp = type;
-			type = map_type(*text_map);
+			type = map_type(text_map);
+			//printf("299 %i\n", type);
 			if (!type)
 			{
-				map_free(map);
-				return (-1);
+				free(text_map);
+				ft_exit(fdf, 3);
 			}
 			else if (type == 2)
-				read_colors(*text_map, map);
+				read_colors(text_map, fdf, i);
 			else
-			{
-				reading(*text_map, map);
-			}		
+				reading(text_map, fdf, i);	
 		}
+		free(text_map);
+		i++;
 	}
-	if (is_valid(map))
-	{
-		map_free(map);
-		return (-1);
-	}
+	if (fdf->row < 2 || fdf->col < 2)
+		ft_exit(fdf, 3);
 	return (1);
 }
 
-static int	count_lines(char **argv)
+static int	count_lines(char *argv)
 {
 	int		fd;
 	int		gnl;
 	int		lines;
-	char	**text_map;
+	char	*text_map;
 	
 	gnl = 1;
 	lines = 0;
-	fd = open(argv[1], O_RDWR);
+	fd = open(argv, O_RDWR);
 	while (gnl != 0)
 	{
-		gnl = get_next_line(fd, text_map);
+		text_map = NULL;
+		gnl = get_next_line(fd, &text_map);
 		if (gnl == -1)
+		{
+			free(text_map);
 			return (-1);
+		}
 		lines++;
-		//free (*text_map);
+		free(text_map);
 	}
 	close(fd);
-	return (lines);
+	return (lines - 1);
 }
 
-static int	val(int argc, char **argv, t_crd **map)
+t_crd	**val(int argc, char **argv, t_fdf *fdf)
 {
 	int		fd;
 	int		gnl;
-	int		lines;
 	int		makemap;
 
-	if (argc < 2)
-	{
-		map = NULL;
-		return (-1);
-	}
-	lines = count_lines(argv);
-	if (!(map = (t_crd **)malloc(sizeof(t_crd *) * lines)))
-	{
-		map = NULL;
-		return (-1);
-	}
-	put_nul(map);
-	makemap = make_map(argc, argv, map);
+	if (argc != 2)
+		ft_exit(fdf, 2);
+	fdf->row = count_lines(argv[1]);
+	if (!(fdf->crd = (t_crd **)malloc(sizeof(t_crd *) * (fdf->row + 1))))
+		ft_exit(fdf, 0);
+	ft_bzero(fdf->crd, fdf->row);
+	makemap = make_map(argv[1], fdf);
+	//printf("mm: %i\n", makemap);
 	if (makemap == -1)
-		return (-1);
-	return (1);
-		
-}
-
-
-
-int main(int argc, char **argv)
-{
-	//void *mlx_ptr;
-	//void *win_ptr;
-	t_crd **point;
-	int	i;
-	int	j;
-
-	point = NULL;
-	
-	// mlx_ptr = mlx_init();
-	// win_ptr = mlx_new_window(mlx_ptr, 500, 500, "mlx 42");
-	if ((val(argc, argv, point)) == (-1))
-		exit (0);
-	i = 0;
-	while (point[i] != NULL)
-	{
-		j = 0;
-		while (point[i][j].full)
-		{
-			printf("%i ", point[i][j].z);
-			j++;
-		}
-		printf("\n");
-	}
-	// mlx_key_hook(win_ptr, deal_key, (void *)0);
-	// mlx_hook(win_ptr, 2, 0, closed, (void *)0);
-	// mlx_loop(mlx_ptr);
+		ft_exit(fdf, 3);
+	return (fdf->crd);	
 }

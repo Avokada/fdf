@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   point.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 19:11:02 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/14 19:11:34 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 16:00:17 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void			point_color(t_fdf *fdf, int y, int x, int scale)
 		fdf->dst.color = WHITE;
 }
 
-static void		put_points_right(t_fdf *fdf, int y, int x)
+void			put_points_right(t_fdf *fdf, int y, int x)
 {
 	fdf->src.x = fdf->crd[y][x].x - fdf->col / 2;
 	fdf->src.y = fdf->crd[y][x].y - fdf->row / 2;
@@ -57,7 +57,7 @@ static void		put_points_right(t_fdf *fdf, int y, int x)
 	draw_line(fdf->pixels, &fdf->src, &fdf->dst);
 }
 
-static void		put_points_down(t_fdf *fdf, int y, int x)
+void			put_points_down(t_fdf *fdf, int y, int x)
 {
 	fdf->src.x = fdf->crd[y][x].x - fdf->col / 2;
 	fdf->src.y = fdf->crd[y][x].y - fdf->row / 2;

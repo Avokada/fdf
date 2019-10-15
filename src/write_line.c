@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   write_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 23:57:49 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/14 18:26:30 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 14:52:25 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-static void	free_arr(char **str)
+void		free_arr(char **str)
 {
 	int		i;
 

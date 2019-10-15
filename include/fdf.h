@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:04:28 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/14 19:13:00 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 16:08:01 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int					key_press(int key, t_fdf *fdf);
 */
 
 void				draw_image(t_fdf *fdf);
+void				draw_line(int *pixels, t_point *src, t_point *dst);
 
 /*
 ** rotate.c
@@ -134,7 +135,16 @@ void				rotate_point(t_fdf *fdf);
 void				put_color(t_draw tmp, t_point *src,\
 					t_point *dst, int *pixels);
 
+/*
+**	graphics_test.c
+*/
+
+t_crd				**val(int argc, char **argv, t_fdf *fdf);
+
 void				write_lines(t_fdf *fdf, int fd);
 void				ft_read_file(t_fdf *fdf, char *file_name);
+void				free_arr(char **str);
+void				put_points_right(t_fdf *fdf, int y, int x);
+void				put_points_down(t_fdf *fdf, int y, int x);
 
 #endif

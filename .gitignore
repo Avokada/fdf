@@ -55,3 +55,4 @@ dkms.conf
 fdf
 .vscode
 graphics_test.c
+*.sh

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:05:46 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/14 18:21:49 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/15 17:20:26 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,25 @@ void			check_input(int argc, char **argv, t_fdf *fdf)
 	int fd;
 
 	fd = 0;
-	if (argc != 2)
+	fd = open(argv[1], O_RDWR);
+	if (fd < 0)
 	{
-		ft_putendl("usage: ./fdf map_file_name");
-		exit(-1);
+		perror(argv[0]);
+		exit(EXIT_FAILURE);
 	}
-	else
-	{
-		fd = open(argv[1], O_RDWR);
-		if (fd < 0)
-		{
-			perror(argv[0]);
-			exit(-1);
-		}
-		close(fd);
-	}
+	close(fd);
 }
 
 int				main(int argc, char **argv)
 {
 	t_fdf	*fdf;
 
+	check_input(argc, argv, fdf);
 	if (!(fdf = (t_fdf *)malloc(sizeof(t_fdf))))
 		ft_exit(NULL, 0);
 	fdf->prog_name = argv[0];
-	check_input(argc, argv, fdf);
 	init_struct(fdf);
-	ft_read_file(fdf, argv[1]);
+	fdf->crd = val(argc, argv, fdf);
 	fdf->scale = WIN_WIDTH / sqrt(fdf->col * fdf->col + fdf->row * fdf->row);
 	draw_image(fdf);
 	mlx_hook(fdf->window, 2, 0, key_press, fdf);
