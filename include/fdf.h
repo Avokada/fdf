@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:04:28 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/15 16:08:01 by aaeron-g         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:54:48 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,10 @@
 
 typedef struct		s_crd
 {
-	int				x;
-	int				y;
-	int				z;
+	float			x;
+	float			y;
+	float			z;
 	int				color;
-	int				full;
 }					t_crd;
 
 typedef struct		s_point
@@ -146,5 +145,6 @@ void				ft_read_file(t_fdf *fdf, char *file_name);
 void				free_arr(char **str);
 void				put_points_right(t_fdf *fdf, int y, int x);
 void				put_points_down(t_fdf *fdf, int y, int x);
+double				get_percent(int z_min, int z_max, int z);
 
 #endif

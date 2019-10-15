@@ -175,11 +175,15 @@ static	void read_colors(char *str, t_fdf *fdf, int j)
 		tmp = ft_strsplit(txt[i], ',');
 		fdf->crd[j][i].z = ft_atoi(tmp[0]);
 		if (!tmp[1])
-			fdf->crd[j][i].color = 0;
+			fdf->crd[j][i].color = -1;
 		else
 			fdf->crd[j][i].color = ft_hexatoi(tmp[1] + 2);
 		fdf->crd[j][i].x = i;
 		fdf->crd[j][i].y = j;
+		if (fdf->crd[j][i].z < fdf->low_p)
+			fdf->low_p = fdf->crd[j][i].z;
+		if (fdf->crd[j][i].z > fdf->top_p)
+			fdf->top_p = fdf->crd[j][i].z;
 		free_arr(tmp);
 		i++;
 	}
@@ -206,10 +210,14 @@ static	void reading(char *str, t_fdf *fdf, int j)
 	{
 		if (i > fdf->col)
 			ft_exit(fdf, 3);
-		fdf->crd[j][i].color = 0;
+		fdf->crd[j][i].color = -1;
 		fdf->crd[j][i].x = i;
 		fdf->crd[j][i].y = j;
 		fdf->crd[j][i].z = ft_atoi(txt[i]);
+		if (fdf->crd[j][i].z < fdf->low_p)
+			fdf->low_p = fdf->crd[j][i].z;
+		if (fdf->crd[j][i].z > fdf->top_p)
+			fdf->top_p = fdf->crd[j][i].z;
 		i++;
 	}
 	fdf->crd[j + 1] = NULL;

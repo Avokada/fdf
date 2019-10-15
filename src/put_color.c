@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   put_color.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 19:09:14 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/15 17:08:40 by aaeron-g         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:44:25 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-static double	get_percent(int z_min, int z_max, int z)
+double			get_percent(int z_min, int z_max, int z)
 {
 	double place;
 	double dist;
@@ -24,25 +24,6 @@ static double	get_percent(int z_min, int z_max, int z)
 	if (dist != 0)
 		ret = place / dist;
 	return (ret);
-}
-
-int				get_color_with_z(int color, t_fdf *fdf, float z)
-{
-	double percent;
-
-	if (color != -1)
-		return (color);
-	percent = get_percent(fdf->low_p, fdf->top_p, z);
-	if (percent < 0.2)
-		return (DARK_TURQUOISE);
-	else if (percent < 0.4)
-		return (MID_TURQUOISE);
-	else if (percent < 0.6)
-		return (GREEN);
-	else if (percent < 0.8)
-		return (YELLOW);
-	else
-		return (WHITE);
 }
 
 static int		change_color(int src, int dst, float percent)

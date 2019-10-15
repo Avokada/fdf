@@ -3,41 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   point.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
+/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 19:11:02 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/15 16:00:17 by aaeron-g         ###   ########.fr       */
+/*   Updated: 2019/10/15 17:59:19 by thaley           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-void			point_color(t_fdf *fdf, int y, int x, int scale)
+int				point_color(int color, t_fdf *fdf, float z)
 {
-	if (fdf->crd[y][x].color != 0)
-		fdf->src.color = fdf->crd[y][x].color;
-	else if (fdf->src.z <= 0)
-		fdf->src.color = BLUE;
-	else if (fdf->src.z <= 3)
-		fdf->dst.color = MID_TURQUOISE;
-	else if (fdf->src.z > 3 && fdf->src.z < 7)
-		fdf->src.color = YELLOW;
+	double percent;
+
+	if (color != -1)
+		return (color);
+	percent = get_percent(fdf->low_p, fdf->top_p, z);
+	if (percent < 0.2)
+		return (DARK_TURQUOISE);
+	else if (percent < 0.4)
+		return (MID_TURQUOISE);
+	else if (percent < 0.6)
+		return (GREEN);
+	else if (percent < 0.8)
+		return (YELLOW);
 	else
-		fdf->src.color = WHITE;
-	if (scale)
-		x += 1;
-	else
-		y += 1;
-	if (fdf->crd[y][x].color != 0)
-		fdf->dst.color = fdf->crd[y][x].color;
-	else if (fdf->dst.z <= 0)
-		fdf->dst.color = BLUE;
-	else if (fdf->dst.z <= 3)
-		fdf->dst.color = MID_TURQUOISE;
-	else if (fdf->dst.z > 3 && fdf->dst.z < 7)
-		fdf->dst.color = YELLOW;
-	else
-		fdf->dst.color = WHITE;
+		return (WHITE);
 }
 
 void			put_points_right(t_fdf *fdf, int y, int x)
@@ -48,7 +39,8 @@ void			put_points_right(t_fdf *fdf, int y, int x)
 	fdf->dst.x = fdf->crd[y][x + 1].x - fdf->col / 2;
 	fdf->dst.y = fdf->crd[y][x + 1].y - fdf->row / 2;
 	fdf->dst.z = fdf->crd[y][x + 1].z / fdf->scale_z;
-	point_color(fdf, y, x, 1);
+	fdf->src.color = point_color(fdf->crd[y][x].color, fdf, fdf->src.z);
+	fdf->dst.color = point_color(fdf->crd[y][x + 1].color, fdf, fdf->dst.z);
 	rotate_point(fdf);
 	fdf->src.x = fdf->src.x * fdf->scale + fdf->offset_x;
 	fdf->src.y = fdf->src.y * fdf->scale + fdf->offset_y;
@@ -65,7 +57,8 @@ void			put_points_down(t_fdf *fdf, int y, int x)
 	fdf->dst.x = fdf->crd[y + 1][x].x - fdf->col / 2;
 	fdf->dst.y = fdf->crd[y + 1][x].y - fdf->row / 2;
 	fdf->dst.z = fdf->crd[y + 1][x].z / fdf->scale_z;
-	point_color(fdf, y, x, 0);
+	fdf->src.color = point_color(fdf->crd[y][x].color, fdf, fdf->src.z);
+	fdf->dst.color = point_color(fdf->crd[y + 1][x].color, fdf, fdf->dst.z);
 	rotate_point(fdf);
 	fdf->src.x = fdf->src.x * fdf->scale + fdf->offset_x;
 	fdf->src.y = fdf->src.y * fdf->scale + fdf->offset_y;
