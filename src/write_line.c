@@ -6,7 +6,7 @@
 /*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 23:57:49 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/15 14:52:25 by aaeron-g         ###   ########.fr       */
+/*   Updated: 2019/10/16 14:09:01 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	write_x_z(char **str, t_fdf *fdf)
 	}
 }
 
-void	write_lines(t_fdf *fdf, int fd)
+void		write_lines(t_fdf *fdf, int fd)
 {
 	char	*line;
 	char	**tmp;

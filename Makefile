@@ -6,7 +6,7 @@
 #    By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/06 18:57:03 by thaley            #+#    #+#              #
-#    Updated: 2019/10/15 15:58:48 by aaeron-g         ###   ########.fr        #
+#    Updated: 2019/10/16 14:04:07 by aaeron-g         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ INCLUDES = -I libft -I include
 LIBS = -L libft -lft -lmlx -framework OpenGL -framework AppKit
 
 SRCS = main.c exit.c key_press.c rotate.c draw.c\
-	read_file.c write_line.c graphics_test.c point.c put_color.c
+	read_file.c write_line.c graphics_test.c point.c\
+	put_color.c map_type.c read_colors.c make_map.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 

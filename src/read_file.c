@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/30 17:03:09 by rfrankly          #+#    #+#             */
-/*   Updated: 2019/10/11 20:34:42 by thaley           ###   ########.fr       */
+/*   Created: 2019/10/08 22:57:49 by thaley            #+#    #+#             */
+/*   Updated: 2019/10/16 14:11:14 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,6 @@ int		count_lines(t_fdf *fdf, char *file_name)
 	close(fd);
 	return (count);
 }
-
-// void	check_coord_mass_len(char **line_coord, t_map *map)
-// {
-// 	int i;
-
-// 	i = -1;
-// 	while (line_coord[++i])
-// 		;
-// 	if (map->first_line_len != i)
-// 		exit_invalid_map();
-// }
 
 void	ft_read_file(t_fdf *fdf, char *file_name)
 {

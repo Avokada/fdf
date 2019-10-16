@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fdf.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaley <thaley@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 16:04:28 by thaley            #+#    #+#             */
-/*   Updated: 2019/10/15 17:54:48 by thaley           ###   ########.fr       */
+/*   Updated: 2019/10/16 14:13:48 by aaeron-g         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,11 +140,48 @@ void				put_color(t_draw tmp, t_point *src,\
 
 t_crd				**val(int argc, char **argv, t_fdf *fdf);
 
+/*
+** write_line.c
+*/
+
 void				write_lines(t_fdf *fdf, int fd);
-void				ft_read_file(t_fdf *fdf, char *file_name);
 void				free_arr(char **str);
+
+/*
+** read_file.c
+*/
+
+void				ft_read_file(t_fdf *fdf, char *file_name);
+
+/*
+** point.c
+*/
+
 void				put_points_right(t_fdf *fdf, int y, int x);
 void				put_points_down(t_fdf *fdf, int y, int x);
+
+/*
+**	put_color.c
+*/
+
 double				get_percent(int z_min, int z_max, int z);
+
+/*
+**	map_type.c
+*/
+
+int					map_type(char *text_map);
+
+/*
+**	read_colors.c
+*/
+
+void				read_colors(char *str, t_fdf *fdf, int j);
+
+/*
+**	make_map.c
+*/
+
+int					make_map(char *argv, t_fdf *fdf);
 
 #endif
