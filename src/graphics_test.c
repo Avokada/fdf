@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   graphics_test.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aaeron-g <aaeron-g@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/16 13:00:15 by aaeron-g          #+#    #+#             */
+/*   Updated: 2019/10/16 13:01:39 by aaeron-g         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/fdf.h"
 
-int	ft_ishex(char c)
+int				ft_ishex(char c)
 {
 	if ((c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))
 		return (1);
 	return (0);
 }
 
-static int	ft_iscolor(char	*str)
+static int		ft_iscolor(char *str)
 {
 	int	i;
 	int	caps;
@@ -20,7 +32,7 @@ static int	ft_iscolor(char	*str)
 		return (0);
 	while (str[i] && i < 8)
 	{
-		if (!ft_ishex(str[i]) && !ft_isdigit (str[i]))
+		if (!ft_ishex(str[i]) && !ft_isdigit(str[i]))
 			return (0);
 		if (str[i] >= 'a' && str[i] <= 'f' && caps == 0)
 			caps = -1;
@@ -35,7 +47,7 @@ static int	ft_iscolor(char	*str)
 	return (1);
 }
 
-static	int map_type(char *text_map)
+static	int		map_type(char *text_map)
 {
 	int	i;
 	int	type;
@@ -44,11 +56,12 @@ static	int map_type(char *text_map)
 	type = 1;
 	while (text_map[i])
 	{
-		if (text_map[i] != ' ' && text_map[i] != ',' && ((!ft_isdigit(text_map[i])\
+		if (text_map[i] != ' ' && text_map[i] != ','\
+		&& ((!ft_isdigit(text_map[i])\
 		&& (text_map[i] == '-' && !ft_isdigit(text_map[i + 1])))))
 			return (0);
-		else if(text_map[i] == ',')
-		{ 
+		else if (text_map[i] == ',')
+		{
 			if (text_map[i + 1] && ft_iscolor(text_map + i + 1))
 			{
 				i += 7;
@@ -62,14 +75,15 @@ static	int map_type(char *text_map)
 	return (type);
 }
 
-static int	is_space(char c)
+static int		is_space(char c)
 {
-	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F'))
+	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f')\
+	|| (c >= 'A' && c <= 'F'))
 		return (1);
 	return (0);
 }
 
-void	map_free(t_crd **map)
+void			map_free(t_crd **map)
 {
 	int i;
 
@@ -82,7 +96,7 @@ void	map_free(t_crd **map)
 	free(*map);
 }
 
-static int	num_items(char *str, int type)
+static int		num_items(char *str, int type)
 {
 	int	res;
 	int i;
@@ -109,20 +123,19 @@ static int	num_items(char *str, int type)
 	}
 	res++;
 	return (res);
-	
 }
 
-static int	len_z(char	*c)
+static int		len_z(char *c)
 {
 	int	i;
 
 	i = 0;
 	while (c[i] && c[i] != ' ' && c[i] != '\0' && c[i] != ',')
 		i++;
-	return (i);	
+	return (i);
 }
 
-static int	pow_16(int n)
+static int		pow_16(int n)
 {
 	int res;
 
@@ -135,7 +148,7 @@ static int	pow_16(int n)
 	return (res);
 }
 
-static int	ft_hexatoi(char *str)
+static int		ft_hexatoi(char *str)
 {
 	int	res;
 	int	i;
@@ -144,18 +157,18 @@ static int	ft_hexatoi(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] >= '0' && str[i ] <= '9')
+		if (str[i] >= '0' && str[i] <= '9')
 			res += (((int)str[i] - 48) * pow_16(ft_strlen(str) - i));
-		if (str[i] >= 'a' && str[i ] <= 'f')
+		if (str[i] >= 'a' && str[i] <= 'f')
 			res += (((int)str[i] - 87) * pow_16(ft_strlen(str) - i));
-		if (str[i] >= 'A' && str[i ] <= 'F')
+		if (str[i] >= 'A' && str[i] <= 'F')
 			res += (((int)str[i] - 55) * pow_16(ft_strlen(str) - i));
 		i++;
 	}
 	return (res);
 }
 
-static	void read_colors(char *str, t_fdf *fdf, int j)
+static	void	read_colors(char *str, t_fdf *fdf, int j)
 {
 	int		i;
 	char	**txt;
@@ -190,11 +203,9 @@ static	void read_colors(char *str, t_fdf *fdf, int j)
 	free_arr(txt);
 }
 
-
-
-static	void reading(char *str, t_fdf *fdf, int j)
+static	void	reading(char *str, t_fdf *fdf, int j)
 {
-	int 	i;
+	int		i;
 	char	**txt;
 
 	txt = ft_strsplit(str, ' ');
@@ -226,7 +237,7 @@ static	void reading(char *str, t_fdf *fdf, int j)
 	free_arr(txt);
 }
 
-static	int	make_map(char *argv, t_fdf *fdf)
+static	int		make_map(char *argv, t_fdf *fdf)
 {
 	char	*text_map;
 	int		fd;
@@ -241,8 +252,6 @@ static	int	make_map(char *argv, t_fdf *fdf)
 	while (gnl != 0)
 	{
 		gnl = get_next_line(fd, &text_map);
-		//printf("%s\n", *text_map);
-		//printf("292 %i %s\n", gnl, *text_map);
 		if (gnl == -1)
 		{
 			free(text_map);
@@ -251,7 +260,6 @@ static	int	make_map(char *argv, t_fdf *fdf)
 		else if (gnl == 1)
 		{
 			type = map_type(text_map);
-			//printf("299 %i\n", type);
 			if (!type)
 			{
 				free(text_map);
@@ -260,7 +268,7 @@ static	int	make_map(char *argv, t_fdf *fdf)
 			else if (type == 2)
 				read_colors(text_map, fdf, i);
 			else
-				reading(text_map, fdf, i);	
+				reading(text_map, fdf, i);
 		}
 		free(text_map);
 		i++;
@@ -270,13 +278,13 @@ static	int	make_map(char *argv, t_fdf *fdf)
 	return (1);
 }
 
-static int	count_lines(char *argv)
+static int		count_lines(char *argv)
 {
 	int		fd;
 	int		gnl;
 	int		lines;
 	char	*text_map;
-	
+
 	gnl = 1;
 	lines = 0;
 	fd = open(argv, O_RDWR);
@@ -296,7 +304,7 @@ static int	count_lines(char *argv)
 	return (lines - 1);
 }
 
-t_crd	**val(int argc, char **argv, t_fdf *fdf)
+t_crd			**val(int argc, char **argv, t_fdf *fdf)
 {
 	int		fd;
 	int		gnl;
@@ -309,8 +317,7 @@ t_crd	**val(int argc, char **argv, t_fdf *fdf)
 		ft_exit(fdf, 0);
 	ft_bzero(fdf->crd, fdf->row);
 	makemap = make_map(argv[1], fdf);
-	//printf("mm: %i\n", makemap);
 	if (makemap == -1)
 		ft_exit(fdf, 3);
-	return (fdf->crd);	
+	return (fdf->crd);
 }
